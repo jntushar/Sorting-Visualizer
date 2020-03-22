@@ -72,8 +72,49 @@ def merge(mainArray, start, middle, end, auxiliaryArray, animations):
         j += 1
 
 
+def quicksort(request):
+    animations = getQuickSortAnimations(arr)
+    return HttpResponse([animations])
 
 
+def getQuickSortAnimations(arr):
+    animations = []
+    auxiliaryArray = arr.copy()
+    quickSortHelper(auxiliaryArray, 0, len(auxiliaryArray) - 1, animations)
+    return animations
+
+
+def quickSortHelper(auxiliaryArray, start, end, animations):
+    if start < end:
+        pivotIndex = partition(auxiliaryArray, start, end, animations)
+        quickSortHelper(auxiliaryArray, start, pivotIndex - 1, animations)
+        quickSortHelper(auxiliaryArray, pivotIndex + 1, end, animations)
+
+
+def partition(auxiliaryArray, start, end, animations):
+    pivot = auxiliaryArray[end]
+    pivotIndex = start
+    for i in range(start, end):
+        animations.append([i, end])
+        animations.append([i, end])
+        if auxiliaryArray[i] <= pivot:
+            animations.append([i, auxiliaryArray[pivotIndex]])
+            animations.append([pivotIndex, auxiliaryArray[i]])
+            auxiliaryArray[i], auxiliaryArray[pivotIndex] = auxiliaryArray[pivotIndex], auxiliaryArray[i]
+            pivotIndex += 1
+        else:
+            animations.append([-1, -1])
+            animations.append([-1, -1])
+        animations.append([-1, -1])
+        animations.append([-1, -1])
+    animations.append([-1, -1])
+    animations.append([-1, -1])
+    animations.append([-1, -1])
+    animations.append([-1, -1])
+    animations.append([pivotIndex, auxiliaryArray[end]])
+    animations.append([end, auxiliaryArray[pivotIndex]])
+    auxiliaryArray[pivotIndex], auxiliaryArray[end] = auxiliaryArray[end], auxiliaryArray[pivotIndex]
+    return pivotIndex
 
 
 

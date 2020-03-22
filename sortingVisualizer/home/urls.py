@@ -4,4 +4,5 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('mergesort/', views.mergesort, name="mergesort"),
+    path('quicksort/', views.quicksort, name="quicksort"),
 ]
