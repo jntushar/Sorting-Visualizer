@@ -117,4 +117,54 @@ def partition(auxiliaryArray, start, end, animations):
     return pivotIndex
 
 
+def selectionsort(request):
+    animations = getSelectionSortAnimations(arr)
+    return HttpResponse([animations])
+
+
+def getSelectionSortAnimations(arr):
+    animations = []
+    auxiliaryArray = arr.copy()
+    selectionSortHelper(auxiliaryArray, animations)
+    return animations
+
+
+def selectionSortHelper(auxiliaryArray, animations):
+    for i in range(0, len(auxiliaryArray)):
+        minIndex = i
+        for j in range(i+1, len(auxiliaryArray)):
+            animations.append(['comparision1', j, minIndex])
+            animations.append(['comparision2', j, minIndex])
+            if auxiliaryArray[j] < auxiliaryArray[minIndex]:
+                minIndex = j
+        animations.append(['swap', minIndex, auxiliaryArray[i]])
+        animations.append(['swap', i, auxiliaryArray[minIndex]])
+
+        auxiliaryArray[minIndex], auxiliaryArray[i] = auxiliaryArray[i], auxiliaryArray[minIndex]
+
+
+def bubblesort(request):
+    animations = getBubbleSortAnimations(arr)
+    return HttpResponse([animations])
+
+
+def getBubbleSortAnimations(arr):
+    animations = []
+    auxiliaryArray = arr.copy()
+    bubbleSortHelper(auxiliaryArray, animations)
+    return animations
+
+
+def bubbleSortHelper(auxiliaryArray, animations):
+    for i in range(0, len(auxiliaryArray) - 1):
+        for j in range(0, len(auxiliaryArray) - 1):
+            animations.append([j, j+1])
+            animations.append([j, j+1])
+            if auxiliaryArray[j] > auxiliaryArray[j+1]:
+                animations.append([j, auxiliaryArray[j+1]])
+                animations.append([j+1, auxiliaryArray[j]])
+                auxiliaryArray[j], auxiliaryArray[j+1] = auxiliaryArray[j+1], auxiliaryArray[j]
+            else:
+                animations.append([-1, -1])
+                animations.append([-1, -1])
 
