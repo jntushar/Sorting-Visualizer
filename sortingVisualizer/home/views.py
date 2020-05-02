@@ -117,32 +117,6 @@ def partition(auxiliaryArray, start, end, animations):
     return pivotIndex
 
 
-def selectionsort(request):
-    animations = getSelectionSortAnimations(arr)
-    return HttpResponse([animations])
-
-
-def getSelectionSortAnimations(arr):
-    animations = []
-    auxiliaryArray = arr.copy()
-    selectionSortHelper(auxiliaryArray, animations)
-    return animations
-
-
-def selectionSortHelper(auxiliaryArray, animations):
-    for i in range(0, len(auxiliaryArray)):
-        minIndex = i
-        for j in range(i+1, len(auxiliaryArray)):
-            animations.append(['comparision1', j, minIndex])
-            animations.append(['comparision2', j, minIndex])
-            if auxiliaryArray[j] < auxiliaryArray[minIndex]:
-                minIndex = j
-        animations.append(['swap', minIndex, auxiliaryArray[i]])
-        animations.append(['swap', i, auxiliaryArray[minIndex]])
-
-        auxiliaryArray[minIndex], auxiliaryArray[i] = auxiliaryArray[i], auxiliaryArray[minIndex]
-
-
 def bubblesort(request):
     animations = getBubbleSortAnimations(arr)
     return HttpResponse([animations])
@@ -167,4 +141,67 @@ def bubbleSortHelper(auxiliaryArray, animations):
             else:
                 animations.append([-1, -1])
                 animations.append([-1, -1])
+
+
+
+def selectionsort(request):
+    animations = getSelectionSortAnimations(arr)
+    return HttpResponse([animations])
+
+
+def getSelectionSortAnimations(arr):
+    animations = []
+    auxiliaryArray = arr.copy()
+    selectionSortHelper(auxiliaryArray, animations)
+    return animations
+
+
+def selectionSortHelper(auxiliaryArray, animations):
+
+    # 999 -> Comparison 1
+    # 9999 -> Comparison 2
+    # 99999 -> Swap
+
+    for i in range(0, len(auxiliaryArray)):
+        minIndex = i
+        for j in range(i+1, len(auxiliaryArray)):
+            animations.append([999, j, minIndex])
+            animations.append([9999, j, minIndex])
+            if auxiliaryArray[j] < auxiliaryArray[minIndex]:
+                minIndex = j
+        animations.append([99999, minIndex, auxiliaryArray[i]])
+        animations.append([99999, i, auxiliaryArray[minIndex]])
+
+        auxiliaryArray[minIndex], auxiliaryArray[i] = auxiliaryArray[i], auxiliaryArray[minIndex]
+
+
+def insertionsort(request):
+    animations = getInsertionSortAnimations(arr)
+    return HttpResponse([animations])
+
+
+def getInsertionSortAnimations(arr):
+    animations = []
+    auxiliaryArray = arr.copy()
+    selectionSortHelper(auxiliaryArray, animations)
+    return animations
+
+
+def insertionSortHelper(auxiliaryArray, animations):
+    for i in range(1, len(auxiliaryArray)):
+        key = auxiliaryArray[i]
+        j = i - 1
+        animations.append(["comparision1", j, i])
+        animations.append(["comparision2", j, i])
+        while j >= 0 and auxiliaryArray[j]>key:
+            animations.append(["overwrite", j + 1, auxiliaryArray[j]])
+            auxiliaryArray[j + 1] = auxiliaryArray[j]
+            j -= 1
+            if j >= 0:
+                animations.append(["comparision1", j, i])
+                animations.append(["comparision2", j, i])
+        animations.append(["overwrite", j + 1, key])
+        auxiliaryArray[j + 1] = key
+
+
 

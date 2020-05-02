@@ -7,4 +7,5 @@ urlpatterns = [
     path('quicksort/', views.quicksort, name="quicksort"),
     path('selectionsort/', views.selectionsort, name="selectionsort"),
     path('bubblesort/', views.bubblesort, name="bubblesort"),
+    path('insertionsort/', views.insertionsort, name="insertionsort"),
 ]

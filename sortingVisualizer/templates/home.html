@@ -105,9 +105,11 @@
 
 </body>
 <script>
-const ANIMATION_SPEED_MS = 6;
+const ANIMATION_SPEED_MS = 5;
 const PRIMARY_COLOR = 'red';
 const SECONDARY_COLOR = 'yellow';
+const ANIMATION_SPEED_MS_BUBBLE = 1;
+
         function merge_sort(){
             $.ajax({
                 type: "POST",
@@ -189,14 +191,16 @@ const SECONDARY_COLOR = 'yellow';
                 data: { csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function callback(animations){
 console.log(animations);
-                            //var arr = JSON.parse(animations);
-                            arr = animations;
+console.log(typeof animations);
+                            var arr = JSON.parse(animations);
+                            //arr = animations;
+
 console.log("selection2");
                             for (let i = 0; i < animations.length; i++) {
-                            const isColorChange = (arr[i][0] === "comparision1") || (arr[i][0] === "comparision2");
+                            const isColorChange = (arr[i][0] === 999) || (arr[i][0] === 9999);
                             const arrayBars = document.getElementsByClassName('array-bars');
                             if(isColorChange === true) {
-                                const color = (arr[i][0] === "comparision1") ? SECONDARY_COLOR : PRIMARY_COLOR;
+                                const color = (arr[i][0] === 999) ? SECONDARY_COLOR : PRIMARY_COLOR;
                                 const [temp, barOneIndex, barTwoIndex] = arr[i];
                                 const barOneStyle = arrayBars[barOneIndex].style;
                                 const barTwoStyle = arrayBars[barTwoIndex].style;
@@ -226,7 +230,7 @@ console.log("selection2");
                 data: { csrfmiddlewaretoken: '{{ csrf_token }}'},
                 success: function callback(animations){
                             var arr = JSON.parse(animations);
-console.log("1");
+
                             for (let i = 0; i < arr.length; i++) {
                                 const isColorChange = (i % 4 === 0) || (i % 4 === 1);
                                 const arrayBars = document.getElementsByClassName('array-bars');
@@ -238,7 +242,7 @@ console.log("1");
                                     setTimeout(() => {
                                         barOneStyle.backgroundColor = color;
                                         barTwoStyle.backgroundColor = color;
-                                    },i * ANIMATION_SPEED_MS);
+                                    },i * ANIMATION_SPEED_MS_BUBBLE);
                                 }
                                 else {
                                     const [barIndex, newHeight] = arr[i];
@@ -248,7 +252,7 @@ console.log("1");
                                 const barStyle = arrayBars[barIndex].style;
                                 setTimeout(() => {
                                     barStyle.height = `${newHeight}px`;
-                                },i * ANIMATION_SPEED_MS);
+                                },i * ANIMATION_SPEED_MS_BUBBLE);
                             }
                 }
             }
