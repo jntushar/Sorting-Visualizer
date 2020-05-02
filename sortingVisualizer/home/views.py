@@ -188,19 +188,23 @@ def getInsertionSortAnimations(arr):
 
 
 def insertionSortHelper(auxiliaryArray, animations):
+
+    # 999 -> comparision1
+    # 9999 -> comparision2
+    # 99999 -> overwrite
     for i in range(1, len(auxiliaryArray)):
         key = auxiliaryArray[i]
         j = i - 1
-        animations.append(["comparision1", j, i])
-        animations.append(["comparision2", j, i])
+        animations.append([999, j, i])
+        animations.append([9999, j, i])
         while j >= 0 and auxiliaryArray[j]>key:
-            animations.append(["overwrite", j + 1, auxiliaryArray[j]])
+            animations.append([99999, j + 1, auxiliaryArray[j]])
             auxiliaryArray[j + 1] = auxiliaryArray[j]
             j -= 1
             if j >= 0:
-                animations.append(["comparision1", j, i])
-                animations.append(["comparision2", j, i])
-        animations.append(["overwrite", j + 1, key])
+                animations.append([999, j, i])
+                animations.append([9999, j, i])
+        animations.append([99999, j + 1, key])
         auxiliaryArray[j + 1] = key
 
 
