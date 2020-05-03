@@ -10,20 +10,26 @@
 
 <body>
 <!-- Navigation Bar -->
-<ul>
-    <li id="logo" >Sorting Visualizer</li>
-    <li class="rightside" ><button onclick="selection_sort()">Selection Sort</button></li>
-    <li class="rightside" ><button onclick="insertion_sort()">Insertion Sort</button></li>
-    <li class="rightside" ><button onclick="bubble_sort()">Bubble Sort</button></li>
-    <li class="rightside" ><button onclick="quick_sort()">Quick Sort</button></li>
-    <li class="rightside"><button onclick="merge_sort()">Merge Sort</button></li>
-    <li class="rightside" ><a  href='/'>Create New Array</a></li>
-</ul>
+<header>
+  <div class="container">
+    <nav>
+	<h3>Sorting Visualizer</h3>
+    <ul>
+      <li><a href="/">Create New Array</a></li>
+      <li><a onclick="merge_sort()">Merge Sort</a></li>
+      <li><a onclick="quick_sort()">Quick Sort</a></li>
+      <li><a onclick="bubble_sort()">Bubble Sort</a></li>
+      <li><a onclick="selection_sort()">Selection Sort</a></li>
+      <li><a onclick="insertion_sort()">Insertion Sort</a></li>
+   </ul>
+  </nav>
+  </div>
+</header>
 
 <!--Array-->
 <div class="array-container">
     {% for i in arr %}
-<div class="array-bars" style="height:{{ i }}px; background-color: white;" >
+<div class="array-bars" style="height:{{ i }}px; background-color: #1778b0;" >
 </div>
     {% endfor %}
 </div>
@@ -32,7 +38,7 @@
 <script>
 
 const ANIMATION_SPEED_MS = 5;
-const PRIMARY_COLOR = 'red';
+const PRIMARY_COLOR = '47474d';
 const SECONDARY_COLOR = 'yellow';
 const ANIMATION_SPEED_MS_BUBBLE = 1;
 
