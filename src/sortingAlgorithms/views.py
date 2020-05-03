@@ -13,7 +13,7 @@ def arrayValues():
 def index(request):
     global arr
     arr = arrayValues()
-    return render(request, "home.html", {'arr': arr})
+    return render(request, "index.html", {'arr': arr})
 
 
 def mergesort(request):

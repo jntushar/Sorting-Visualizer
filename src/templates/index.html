@@ -1,0 +1,219 @@
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorting visualizer</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+
+<body>
+<!-- Navigation Bar -->
+<ul>
+    <li id="logo" >Sorting Visualizer</li>
+    <li class="rightside" ><button onclick="selection_sort()">Selection Sort</button></li>
+    <li class="rightside" ><button onclick="insertion_sort()">Insertion Sort</button></li>
+    <li class="rightside" ><button onclick="bubble_sort()">Bubble Sort</button></li>
+    <li class="rightside" ><button onclick="quick_sort()">Quick Sort</button></li>
+    <li class="rightside"><button onclick="merge_sort()">Merge Sort</button></li>
+    <li class="rightside" ><a  href='/'>Create New Array</a></li>
+</ul>
+
+<!--Array-->
+<div class="array-container">
+    {% for i in arr %}
+<div class="array-bars" style="height:{{ i }}px; background-color: white;" >
+</div>
+    {% endfor %}
+</div>
+
+</body>
+<script>
+
+const ANIMATION_SPEED_MS = 5;
+const PRIMARY_COLOR = 'red';
+const SECONDARY_COLOR = 'yellow';
+const ANIMATION_SPEED_MS_BUBBLE = 1;
+
+function merge_sort(){
+    $.ajax({
+    type: "POST",
+    url: '{{ 'mergesort/' }}',
+    data: { csrfmiddlewaretoken: '{{ csrf_token }}'},
+    success: function callback(animations){
+                var arr = JSON.parse(animations);
+
+                for (let i = 0; i < arr.length; i++) {
+                    const arrayBars = document.getElementsByClassName('array-bars');
+                    const isColorChange = i % 3 !== 2;
+                    if (isColorChange) {
+                        const [barOneIdx, barTwoIdx] = arr[i];
+                        const barOneStyle = arrayBars[barOneIdx].style;
+                        const barTwoStyle = arrayBars[barTwoIdx].style;
+                        const color = i % 3 === 0 ? SECONDARY_COLOR : PRIMARY_COLOR;
+                        setTimeout(() => {
+                            barOneStyle.backgroundColor = color;
+                            barTwoStyle.backgroundColor = color;
+                        }, i * ANIMATION_SPEED_MS);
+                    } else {
+                    setTimeout(() => {
+                        const [barOneIdx, newHeight] = arr[i];
+                        const barOneStyle = arrayBars[barOneIdx].style;
+                        barOneStyle.height = `${newHeight}px`;
+                        }, i * ANIMATION_SPEED_MS);
+                    }
+                    }
+                }
+    });
+}
+
+
+function quick_sort() {
+    $.ajax({
+    type: "POST",
+    url: '{{ 'quicksort/' }}',
+    data: { csrfmiddlewaretoken: '{{ csrf_token }}'},
+    success: function callback(animations){
+        var arr = JSON.parse(animations);
+
+        for (let i = 0; i < arr.length - 1; i++) {
+            const isColorChange = (i % 6 === 0) || (i % 6 === 1);
+            const arrayBars = document.getElementsByClassName('array-bars');
+            if(isColorChange === true) {
+                const color = (i % 6 === 0) ? SECONDARY_COLOR : PRIMARY_COLOR;
+                const [barOneIndex, barTwoIndex] = arr[i];
+                if(barOneIndex === -1) {
+                    continue;
+                }
+                const barOneStyle = arrayBars[barOneIndex].style;
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                },i * ANIMATION_SPEED_MS);
+            }
+            else {
+                const [barIndex, newHeight] = arr[i];
+                if (barIndex === -1) {
+                    continue;
+            }
+            const barStyle = arrayBars[barIndex].style;
+            setTimeout(() => {
+                barStyle.height = `${newHeight}px`;
+            },i * ANIMATION_SPEED_MS);
+            }
+            }
+        }
+    });
+}
+
+
+function bubble_sort() {
+    $.ajax({
+    type: "POST",
+    url: '{{ 'bubblesort/' }}',
+    data: { csrfmiddlewaretoken: '{{ csrf_token }}'},
+    success: function callback(animations){
+        var arr = JSON.parse(animations);
+
+        for (let i = 0; i < arr.length; i++) {
+            const isColorChange = (i % 4 === 0) || (i % 4 === 1);
+            const arrayBars = document.getElementsByClassName('array-bars');
+                if(isColorChange === true) {
+                    const color = (i % 4 === 0) ? SECONDARY_COLOR : PRIMARY_COLOR;
+                    const [barOneIndex, barTwoIndex] = arr[i];
+                    const barOneStyle = arrayBars[barOneIndex].style;
+                    const barTwoStyle = arrayBars[barTwoIndex].style;
+                    setTimeout(() => {
+                        barOneStyle.backgroundColor = color;
+                        barTwoStyle.backgroundColor = color;
+                    },i * ANIMATION_SPEED_MS_BUBBLE);
+                }
+                else {
+                    const [barIndex, newHeight] = arr[i];
+                    if (barIndex === -1) {
+                        continue;
+                    }
+                    const barStyle = arrayBars[barIndex].style;
+                    setTimeout(() => {
+                        barStyle.height = `${newHeight}px`;
+                    },i * ANIMATION_SPEED_MS_BUBBLE);
+                }
+        }
+    }
+    });
+}
+
+
+function selection_sort() {
+    $.ajax({
+    type: "POST",
+    url: '{{ 'selectionsort/' }}',
+    data: { csrfmiddlewaretoken: '{{ csrf_token }}'},
+    success: function callback(animations){
+        var arr = JSON.parse(animations);
+
+        for (let i = 0; i < animations.length; i++) {
+            const isColorChange = (arr[i][0] === 999) || (arr[i][0] === 9999);
+            const arrayBars = document.getElementsByClassName('array-bars');
+            if(isColorChange === true) {
+                const color = (arr[i][0] === 999) ? SECONDARY_COLOR : PRIMARY_COLOR;
+                const [temp, barOneIndex, barTwoIndex] = arr[i];
+                const barOneStyle = arrayBars[barOneIndex].style;
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                },i * ANIMATION_SPEED_MS);
+            }
+            else {
+                const [temp, barIndex, newHeight] = arr[i];
+                const barStyle = arrayBars[barIndex].style;
+            setTimeout(() => {
+                barStyle.height = `${newHeight}px`;
+            },i * ANIMATION_SPEED_MS);
+            }
+        }
+    }
+
+    });
+}
+
+
+function insertion_sort() {
+    $.ajax({
+    type: "POST",
+    url: '{{ 'insertionsort/' }}',
+    data: { csrfmiddlewaretoken: '{{ csrf_token }}'},
+    success: function callback(animations){
+        var arr = JSON.parse(animations);
+
+        for (let i = 0; i < arr.length; i++) {
+            const isColorChange = (arr[i][0] === 999) || (arr[i][0] === 9999);
+            const arrayBars = document.getElementsByClassName('array-bars');
+            if(isColorChange === true) {
+                const color = (arr[i][0] === 999) ? SECONDARY_COLOR : PRIMARY_COLOR;
+                const [temp, barOneIndex, barTwoIndex] = arr[i];
+                const barOneStyle = arrayBars[barOneIndex].style;
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                },i * ANIMATION_SPEED_MS);
+            }
+            else {
+                const [temp, barIndex, newHeight] = arr[i];
+                const barStyle = arrayBars[barIndex].style;
+                setTimeout(() => {
+                    barStyle.height = `${newHeight}px`;
+                },i * ANIMATION_SPEED_MS);
+            }
+        }
+    }
+    });
+}
+</script>
+</html>
+
+
